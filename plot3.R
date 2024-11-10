@@ -1,0 +1,11 @@
+power_data <- read.table("household_power_consumption.txt", sep=";", header=TRUE, na.strings="?", stringsAsFactors=FALSE)
+power_data$Date <- as.Date(power_data$Date, format="%d/%m/%Y")
+data_filtered <- subset(power_data, Date >= "2007-02-01" & Date <= "2007-02-02")
+data_filtered$DateTime <- strptime(paste(data_filtered$Date, data_filtered$Time), format="%Y-%m-%d %H:%M:%S")
+# Plot 4: Energy Sub-metering over Time
+png("plot4.png", width=480, height=480)
+plot(data_filtered$DateTime, data_filtered$Sub_metering_1, type="l", col="black", xlab="DateTime", ylab="Energy Sub-metering (watt-hour)", main="Energy Sub-metering over Time")
+lines(data_filtered$DateTime, data_filtered$Sub_metering_2, col="red")
+lines(data_filtered$DateTime, data_filtered$Sub_metering_3, col="blue")
+legend("topright", legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"), lty=1)
+dev.off()
